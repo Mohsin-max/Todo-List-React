@@ -1,22 +1,54 @@
-import React,{useState} from 'react'
-import { Link } from 'react-router-dom';
+import axios from 'axios';
+import React, { useContext, useEffect, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom';
+import { ApiContext } from '../context/ContextApi';
+
 
 const Signup = () => {
+
+    const { BASE_URL } = useContext(ApiContext);
+
+    const navigate = useNavigate();
 
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const handleSignup = (e) => {
 
-        e.preventDefault();
 
-        console.log(username,email,password);
-        
+    const handleSignup = async (e) => {
 
-        setUsername("");
-        setEmail("");
-        setPassword("")
+        try {
+            e.preventDefault();
+
+            const response = await axios.post(`${BASE_URL}/users.json`, { username, email, password });
+
+            if (response) {
+
+                console.log("Submited");
+
+
+            } else {
+
+                console.log("Failed");
+
+            }
+
+            setUsername("");
+            setEmail("");
+            setPassword("");
+
+            navigate("/login");
+
+
+        }
+        catch (error) {
+
+            console.error("error updating array", error);
+
+
+        }
+
 
 
     }
@@ -34,7 +66,9 @@ const Signup = () => {
                         onChange={(e) => setUsername(e.target.value)}
                         type="text"
                         placeholder='Enter username'
-                        className='w-[270px] h-9 ps-2 border-2 border-purple-400 rounded-md outline-none focus:border-purple-700' />
+                        className='w-[270px] h-9 ps-2 border-2 border-purple-400 rounded-md outline-none focus:border-purple-700'
+                        required
+                         />
                 </div>
 
                 <div>
@@ -44,7 +78,9 @@ const Signup = () => {
                         onChange={(e) => setEmail(e.target.value)}
                         type="email"
                         placeholder='Enter email'
-                        className='w-[270px] h-9 ps-2 border-2 border-purple-400 rounded-md outline-none focus:border-purple-700' />
+                        className='w-[270px] h-9 ps-2 border-2 border-purple-400 rounded-md outline-none focus:border-purple-700'
+                        required
+                        />
                 </div>
 
                 <div>
@@ -54,7 +90,9 @@ const Signup = () => {
                         onChange={(e) => setPassword(e.target.value)}
                         type="password"
                         placeholder='Enter password'
-                        className='w-[270px] h-9 ps-2 border-2 border-purple-400 rounded-md outline-none focus:border-purple-700' />
+                        className='w-[270px] h-9 ps-2 border-2 border-purple-400 rounded-md outline-none focus:border-purple-700'
+                        required
+                        />
                 </div>
 
 
